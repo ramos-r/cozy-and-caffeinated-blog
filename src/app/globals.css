@@ -99,6 +99,17 @@ body {
   color: var(--color-foreground);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /*
  * Category placeholder gradients (CoverImage) — one per CATEGORIES entry.
  * Kept here, not inline in components, per the "no hard-coded colors
