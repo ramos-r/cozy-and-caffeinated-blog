@@ -28,6 +28,15 @@ Create a `.env.local` (never committed — already git-ignored) with:
 
 The app won't boot correctly without all five set.
 
+**Gotcha**: `ADMIN_PASSWORD_HASH` is a bcrypt hash, which always contains
+literal `$` characters (e.g. `$2b$09$...`). Next.js expands `$VAR`-style
+references when it parses `.env.local`, so an unescaped `$` gets silently
+swallowed as a (missing) variable reference and the hash gets truncated —
+login then fails with no useful error. **Escape every `$` as `\$` in
+`.env.local`** (e.g. `ADMIN_PASSWORD_HASH="\$2b\$09\$..."`). This only
+applies to local `.env*` files — env vars set directly in Vercel's project
+settings are injected as-is, no expansion, so nothing needs escaping there.
+
 ### Database
 
 Schema lives in `src/db/schema.ts` (three tables: `posts`, `gallery_items`,
