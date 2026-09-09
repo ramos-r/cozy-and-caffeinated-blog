@@ -28,6 +28,26 @@ Create a `.env.local` (never committed — already git-ignored) with:
 
 The app won't boot correctly without all five set.
 
+### Database
+
+Schema lives in `src/db/schema.ts` (three tables: `posts`, `gallery_items`,
+`site_settings`). After changing it:
+
+```bash
+npx drizzle-kit generate   # writes a migration file to drizzle/
+npx drizzle-kit migrate    # applies pending migrations to DATABASE_URL
+```
+
+To populate starting content (7 sample posts, 8 gallery items, one Right Now
+row) once the tables exist:
+
+```bash
+npx tsx scripts/seed.ts
+```
+
+Safe to re-run — it skips rows that already exist by slug/caption, and
+upserts the single `site_settings` row rather than duplicating it.
+
 ## Admin area
 
 `/admin` manages posts, gallery photos, and the sidebar's "Right Now"
