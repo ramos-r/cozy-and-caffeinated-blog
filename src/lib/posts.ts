@@ -29,3 +29,14 @@ export async function getPostsByCategory(category: Category | "All"): Promise<Po
     .where(and(eq(posts.published, true), eq(posts.category, category)))
     .orderBy(desc(posts.date));
 }
+
+// Admin-only: includes drafts, not just published posts.
+export async function getAllPostsForAdmin(): Promise<Post[]> {
+  return db.select().from(posts).orderBy(desc(posts.date));
+}
+
+// Admin-only: looked up by id (for the edit form), no published filter.
+export async function getPostById(id: number): Promise<Post | null> {
+  const [post] = await db.select().from(posts).where(eq(posts.id, id));
+  return post ?? null;
+}

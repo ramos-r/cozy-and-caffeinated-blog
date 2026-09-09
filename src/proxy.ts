@@ -7,6 +7,11 @@ export default auth((req) => {
 
   const isAdminRoute = pathname.startsWith("/admin");
   const isLoginRoute = pathname === "/login";
+  const isUploadRoute = pathname.startsWith("/api/upload");
+
+  if (isUploadRoute && !isLoggedIn) {
+    return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  }
 
   if (isAdminRoute && !isLoggedIn) {
     return NextResponse.redirect(new URL("/login", req.nextUrl.origin));
@@ -18,5 +23,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/admin/:path*", "/login"],
+  matcher: ["/admin/:path*", "/login", "/api/upload"],
 };
