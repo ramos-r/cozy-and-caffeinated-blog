@@ -95,3 +95,42 @@ body {
   background: var(--color-background);
   color: var(--color-foreground);
 }
+
+/*
+ * Category placeholder gradients (CoverImage) — one per CATEGORIES entry.
+ * Kept here, not inline in components, per the "no hard-coded colors
+ * outside globals.css" rule.
+ */
+.gradient-coffee {
+  background-image: linear-gradient(135deg, oklch(0.5 0.07 50), oklch(0.82 0.05 75));
+}
+.gradient-books {
+  background-image: linear-gradient(135deg, oklch(0.55 0.045 60), oklch(0.85 0.03 75));
+}
+.gradient-autumn {
+  background-image: linear-gradient(135deg, oklch(0.58 0.15 35), oklch(0.8 0.11 70));
+}
+.gradient-thoughts {
+  background-image: linear-gradient(135deg, oklch(0.68 0.06 145), oklch(0.92 0.02 85));
+}
+.gradient-art {
+  background-image: linear-gradient(135deg, oklch(0.52 0.16 25), oklch(0.8 0.09 60));
+}
+
+@media (prefers-color-scheme: dark) {
+  .gradient-coffee {
+    background-image: linear-gradient(135deg, oklch(0.32 0.05 50), oklch(0.5 0.06 65));
+  }
+  .gradient-books {
+    background-image: linear-gradient(135deg, oklch(0.34 0.035 60), oklch(0.5 0.03 70));
+  }
+  .gradient-autumn {
+    background-image: linear-gradient(135deg, oklch(0.38 0.12 35), oklch(0.55 0.11 60));
+  }
+  .gradient-thoughts {
+    background-image: linear-gradient(135deg, oklch(0.36 0.05 145), oklch(0.5 0.03 85));
+  }
+  .gradient-art {
+    background-image: linear-gradient(135deg, oklch(0.32 0.13 25), oklch(0.5 0.09 55));
+  }
+}

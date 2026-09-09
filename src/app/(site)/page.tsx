@@ -1,7 +1,11 @@
+import { getAllPosts } from "@/lib/posts";
 import { Ornament } from "@/components/ornament";
+import { PostFeed } from "@/components/post-feed";
 import { SiteFooter } from "@/components/site-footer";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const posts = await getAllPosts();
+
   return (
     <>
       <div className="mx-auto max-w-2xl text-center">
@@ -15,11 +19,12 @@ export default function HomePage() {
         <div className="mt-8">
           <Ornament />
         </div>
-        <p className="mt-10 text-muted-foreground">
-          The post feed and category filters land in the next phase — for now, this page just
-          confirms the shell renders correctly.
-        </p>
       </div>
+
+      <div className="mx-auto mt-12 max-w-4xl">
+        <PostFeed posts={posts} />
+      </div>
+
       <SiteFooter />
     </>
   );

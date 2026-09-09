@@ -1,7 +1,12 @@
+import { getGalleryItems } from "@/lib/gallery";
+import { CoverImage } from "@/components/cover-image";
 import { Ornament } from "@/components/ornament";
 import { SiteFooter } from "@/components/site-footer";
+import type { Category } from "@/lib/categories";
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const items = await getGalleryItems();
+
   return (
     <>
       <div className="mx-auto max-w-2xl text-center">
@@ -13,11 +18,27 @@ export default function GalleryPage() {
         <div className="mt-8">
           <Ornament />
         </div>
-        <p className="mt-10 text-muted-foreground">
-          The photo grid lands in the next phase — for now, this page just confirms the shell
-          renders correctly.
-        </p>
       </div>
+
+      <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-3">
+        {items.map((item) => (
+          <figure
+            key={item.id}
+            className="overflow-hidden rounded-xl border border-border bg-card"
+          >
+            <CoverImage
+              src={item.imageUrl}
+              alt={item.caption}
+              category={item.category as Category}
+              className="aspect-square w-full rounded-none"
+            />
+            <figcaption className="px-3 py-2 text-center font-serif italic text-sm text-muted-foreground">
+              {item.caption}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
       <SiteFooter />
     </>
   );
