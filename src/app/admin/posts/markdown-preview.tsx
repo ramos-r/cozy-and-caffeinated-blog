@@ -12,10 +12,7 @@ export function MarkdownPreview({ markdown }: { markdown: string }) {
   const [result, setResult] = useState<SerializedResult | null>(null);
 
   useEffect(() => {
-    if (!markdown.trim()) {
-      setResult(null);
-      return;
-    }
+    if (!markdown.trim()) return;
     const handle = setTimeout(() => {
       serializeMarkdown(markdown).then(setResult);
     }, 400);

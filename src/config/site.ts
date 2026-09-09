@@ -5,6 +5,9 @@ import { Home, User, Images, Camera, MessageCircle, Mail } from "lucide-react";
 
 export const siteConfig = {
   name: "Cozy & Caffeinated",
+  url: "https://cozy-and-caffeinated.vercel.app",
+  description:
+    "Books, coffee and the softest season of the year — written slowly, on purpose.",
   tagline: "BOOKS · COFFEE · AUTUMN",
   topBarNote: "one more chapter, one more cup",
   nav: [

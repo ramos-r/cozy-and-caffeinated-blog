@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CATEGORIES, type Category } from "@/lib/categories";
 import { cn, slugify } from "@/lib/utils";
@@ -21,8 +21,9 @@ export function PostForm({ post }: PostFormProps) {
   const isEditing = !!post;
 
   const [title, setTitle] = useState(post?.title ?? "");
-  const [slug, setSlug] = useState(post?.slug ?? "");
-  const [slugTouched, setSlugTouched] = useState(isEditing);
+  // null = "follow the title automatically"; a string once the user edits the field directly.
+  const [manualSlug, setManualSlug] = useState<string | null>(post?.slug ?? null);
+  const slug = manualSlug ?? slugify(title);
   const [category, setCategory] = useState<Category>(
     (post?.category as Category) ?? CATEGORIES[0],
   );
@@ -31,15 +32,11 @@ export function PostForm({ post }: PostFormProps) {
   const [content, setContent] = useState(post?.content ?? "");
   const [tags, setTags] = useState(post?.tags?.join(", ") ?? "");
   const [published, setPublished] = useState(post?.published ?? true);
-  const [coverUrl, setCoverUrl] = useState<string | null>(post?.coverUrl ?? null);
+  const coverUrl = post?.coverUrl ?? null;
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(post?.coverUrl ?? null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (!slugTouched) setSlug(slugify(title));
-  }, [title, slugTouched]);
 
   function handleCoverChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -119,10 +116,7 @@ export function PostForm({ post }: PostFormProps) {
           <input
             id="slug"
             value={slug}
-            onChange={(e) => {
-              setSlug(e.target.value);
-              setSlugTouched(true);
-            }}
+            onChange={(e) => setManualSlug(e.target.value)}
             required
             className={inputClasses}
           />

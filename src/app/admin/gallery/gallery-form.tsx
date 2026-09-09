@@ -23,7 +23,7 @@ export function GalleryForm({ item }: GalleryFormProps) {
     (item?.category as Category) ?? CATEGORIES[0],
   );
   const [order, setOrder] = useState(item?.order ?? 0);
-  const [imageUrl, setImageUrl] = useState<string | null>(item?.imageUrl ?? null);
+  const imageUrl = item?.imageUrl ?? null;
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(item?.imageUrl ?? null);
   const [error, setError] = useState<string | null>(null);

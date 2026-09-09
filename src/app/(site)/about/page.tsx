@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { CoverImage } from "@/components/cover-image";
 import { Ornament } from "@/components/ornament";
 import { SiteFooter } from "@/components/site-footer";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "Bookworm, coffee drinker, collector of quiet afternoons.",
+};
 
 const LITTLE_THINGS = [
   "Creaky floors in secondhand bookshops.",

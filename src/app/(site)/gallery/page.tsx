@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import { getGalleryItems } from "@/lib/gallery";
 import { CoverImage } from "@/components/cover-image";
 import { Ornament } from "@/components/ornament";
 import { SiteFooter } from "@/components/site-footer";
 import type { Category } from "@/lib/categories";
+
+export const metadata: Metadata = {
+  title: "Gallery",
+  description: "Photographs from the softest months of the year.",
+};
 
 export default async function GalleryPage() {
   const items = await getGalleryItems();
