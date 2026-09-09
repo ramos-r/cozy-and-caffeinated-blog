@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/500.css";
-import "@fontsource/inter/600.css";
-import "@fontsource/fraunces/500.css";
-import "@fontsource/fraunces/600.css";
-import "@fontsource/fraunces/500-italic.css";
-import "@fontsource/fraunces/600-italic.css";
+// Latin-only subset: the full files bundle every script (Cyrillic, Greek,
+// Vietnamese, etc.), which was bloating render-blocking CSS for a
+// site that's English-only — see PLAN.md Phase 10's Lighthouse pass.
+import "@fontsource/inter/latin-400.css";
+import "@fontsource/inter/latin-500.css";
+import "@fontsource/inter/latin-600.css";
+import "@fontsource/fraunces/latin-500.css";
+import "@fontsource/fraunces/latin-600.css";
+import "@fontsource/fraunces/latin-500-italic.css";
+import "@fontsource/fraunces/latin-600-italic.css";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
 
