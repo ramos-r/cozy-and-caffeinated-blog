@@ -9,6 +9,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       readingTitle={settings.readingTitle}
       readingDetail={settings.readingDetail}
       drinkingDetail={settings.drinkingDetail}
+      avatarIcon={settings.avatarIcon}
+      avatarImageUrl={settings.avatarImageUrl}
     >
       {children}
     </Shell>

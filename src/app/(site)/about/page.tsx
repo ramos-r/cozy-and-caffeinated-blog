@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CoverImage } from "@/components/cover-image";
 import { Ornament } from "@/components/ornament";
 import { SiteFooter } from "@/components/site-footer";
+import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
   title: "About",
@@ -20,15 +21,15 @@ const LITTLE_THINGS = [
 export default function AboutPage() {
   return (
     <>
-      <div className="mx-auto max-w-2xl text-center">
+      <Reveal className="mx-auto max-w-2xl text-center">
         <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Hello there</p>
         <h1 className="mt-4 font-serif text-4xl sm:text-5xl">About me</h1>
         <p className="mt-4 font-serif italic text-lg text-muted-foreground">
           Bookworm, coffee drinker, collector of quiet afternoons.
         </p>
-      </div>
+      </Reveal>
 
-      <div className="mx-auto mt-14 grid max-w-4xl gap-10 sm:grid-cols-2 sm:items-start">
+      <Reveal className="mx-auto mt-14 grid max-w-4xl gap-10 sm:grid-cols-2 sm:items-start">
         <figure>
           <CoverImage
             src={null}
@@ -59,13 +60,13 @@ export default function AboutPage() {
             before, a drink going lukewarm beside me, entirely unbothered by either.
           </p>
         </div>
-      </div>
+      </Reveal>
 
       <div className="mt-16">
         <Ornament />
       </div>
 
-      <div className="mx-auto mt-14 grid max-w-4xl gap-10 sm:grid-cols-2 sm:items-center">
+      <Reveal className="mx-auto mt-14 grid max-w-4xl gap-10 sm:grid-cols-2 sm:items-center">
         <div>
           <h2 className="font-serif text-2xl">Little things I love</h2>
           <ul className="mt-6 space-y-3">
@@ -83,7 +84,7 @@ export default function AboutPage() {
           category="Autumn"
           className="aspect-[4/3] w-full"
         />
-      </div>
+      </Reveal>
 
       <SiteFooter />
     </>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CATEGORIES } from "@/lib/categories";
 import { PostCard } from "./post-card";
+import { Reveal } from "./reveal";
 import { cn } from "@/lib/utils";
 import type { Post } from "@/lib/posts";
 
@@ -45,7 +46,11 @@ export function PostFeed({ posts }: PostFeedProps) {
             No posts here yet — check back soon.
           </p>
         ) : (
-          filtered.map((post) => <PostCard key={post.id} post={post} />)
+          filtered.map((post, i) => (
+            <Reveal key={post.id} delay={Math.min(i, 5) * 80}>
+              <PostCard post={post} />
+            </Reveal>
+          ))
         )}
       </div>
     </div>

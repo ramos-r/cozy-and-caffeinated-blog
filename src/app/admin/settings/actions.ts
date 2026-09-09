@@ -5,11 +5,17 @@ import { z } from "zod";
 import { db } from "@/db";
 import { siteSettings } from "@/db/schema";
 import { auth } from "@/auth";
+import { isSidebarIconKey } from "@/lib/sidebar-icons";
 
 const settingsSchema = z.object({
   readingTitle: z.string().min(1),
   readingDetail: z.string().min(1),
   drinkingDetail: z.string().min(1),
+  avatarIcon: z
+    .string()
+    .nullable()
+    .refine((v) => v === null || isSidebarIconKey(v), "Unknown icon"),
+  avatarImageUrl: z.string().url().nullable(),
 });
 
 export type SettingsInput = z.infer<typeof settingsSchema>;

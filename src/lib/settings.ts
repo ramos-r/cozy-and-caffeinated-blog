@@ -6,12 +6,16 @@ export interface SiteSettings {
   readingTitle: string;
   readingDetail: string;
   drinkingDetail: string;
+  avatarIcon: string | null;
+  avatarImageUrl: string | null;
 }
 
 const FALLBACK_SETTINGS: SiteSettings = {
   readingTitle: "Piranesi",
   readingDetail: "for the second time",
   drinkingDetail: "a cinnamon latte",
+  avatarIcon: null,
+  avatarImageUrl: null,
 };
 
 export async function getSiteSettings(): Promise<SiteSettings> {
@@ -21,5 +25,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     readingTitle: row.readingTitle,
     readingDetail: row.readingDetail,
     drinkingDetail: row.drinkingDetail,
+    avatarIcon: row.avatarIcon,
+    avatarImageUrl: row.avatarImageUrl,
   };
 }

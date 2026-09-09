@@ -2,13 +2,14 @@ import { getAllPosts } from "@/lib/posts";
 import { Ornament } from "@/components/ornament";
 import { PostFeed } from "@/components/post-feed";
 import { SiteFooter } from "@/components/site-footer";
+import { Reveal } from "@/components/reveal";
 
 export default async function HomePage() {
   const posts = await getAllPosts();
 
   return (
     <>
-      <div className="mx-auto max-w-2xl text-center">
+      <Reveal className="mx-auto max-w-2xl text-center">
         <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
           Welcome to my little corner
         </p>
@@ -19,7 +20,7 @@ export default async function HomePage() {
         <div className="mt-8">
           <Ornament />
         </div>
-      </div>
+      </Reveal>
 
       <div className="mx-auto mt-12 max-w-4xl">
         <PostFeed posts={posts} />

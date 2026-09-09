@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { signOut } from "@/auth";
 import { siteConfig } from "@/config/site";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
@@ -10,6 +11,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           {siteConfig.name} <span className="font-sans text-sm text-muted-foreground">admin</span>
         </Link>
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           <Link
             href="/"
             target="_blank"

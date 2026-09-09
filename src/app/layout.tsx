@@ -33,9 +33,17 @@ export const metadata: Metadata = {
   },
 };
 
+// Resolves the theme class before first paint so there's no flash of the
+// wrong theme — the server can't know the visitor's localStorage or OS
+// preference, so this has to run as a blocking inline script, not React.
+const themeInitScript = `(function(){try{var t=localStorage.getItem("theme");var dark=t==="dark"||(t!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",dark);}catch(e){}})();`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );

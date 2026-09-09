@@ -38,5 +38,7 @@ export const siteSettings = pgTable("site_settings", {
   readingTitle: varchar("reading_title", { length: 200 }).notNull(),
   readingDetail: varchar("reading_detail", { length: 200 }).notNull(),
   drinkingDetail: varchar("drinking_detail", { length: 200 }).notNull(),
+  avatarIcon: varchar("avatar_icon", { length: 30 }), // key into SIDEBAR_ICONS, nullable
+  avatarImageUrl: text("avatar_image_url"), // Vercel Blob URL, nullable — takes precedence over avatarIcon
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

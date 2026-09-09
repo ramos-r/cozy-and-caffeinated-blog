@@ -6,20 +6,32 @@ import { usePathname } from "next/navigation";
 import { BookOpen, Coffee, Menu, X } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { SIDEBAR_ICONS, type SidebarIconKey } from "@/lib/sidebar-icons";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface ShellProps {
   readingTitle: string;
   readingDetail: string;
   drinkingDetail: string;
+  avatarIcon: string | null;
+  avatarImageUrl: string | null;
   children: React.ReactNode;
 }
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
-export function Shell({ readingTitle, readingDetail, drinkingDetail, children }: ShellProps) {
+export function Shell({
+  readingTitle,
+  readingDetail,
+  drinkingDetail,
+  avatarIcon,
+  avatarImageUrl,
+  children,
+}: ShellProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const pathname = usePathname();
+  const AvatarIcon = avatarIcon ? SIDEBAR_ICONS[avatarIcon as SidebarIconKey] : null;
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -34,15 +46,18 @@ export function Shell({ readingTitle, readingDetail, drinkingDetail, children }:
     <div className="md:flex md:min-h-screen">
       <div className="fixed inset-x-0 top-0 z-30 flex items-center justify-between border-b border-border bg-background px-4 py-3 md:hidden">
         <span className="font-serif text-lg">{siteConfig.name}</span>
-        <button
-          type="button"
-          aria-label={drawerOpen ? "Close menu" : "Open menu"}
-          aria-expanded={drawerOpen}
-          onClick={() => setDrawerOpen((v) => !v)}
-          className={cn("rounded-md p-2 text-foreground hover:bg-secondary", focusRing)}
-        >
-          {drawerOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+          <button
+            type="button"
+            aria-label={drawerOpen ? "Close menu" : "Open menu"}
+            aria-expanded={drawerOpen}
+            onClick={() => setDrawerOpen((v) => !v)}
+            className={cn("rounded-md p-2 text-foreground hover:bg-secondary", focusRing)}
+          >
+            {drawerOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {drawerOpen && (
@@ -61,8 +76,15 @@ export function Shell({ readingTitle, readingDetail, drinkingDetail, children }:
         )}
       >
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary font-serif text-lg text-primary-foreground">
-            C
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary font-serif text-lg text-primary-foreground">
+            {avatarImageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element -- small avatar, not worth next/image's overhead here
+              <img src={avatarImageUrl} alt="" className="h-full w-full object-cover" />
+            ) : AvatarIcon ? (
+              <AvatarIcon className="h-5 w-5" />
+            ) : (
+              "C"
+            )}
           </span>
           <div>
             <p className="font-serif text-lg leading-tight">{siteConfig.name}</p>
@@ -113,23 +135,26 @@ export function Shell({ readingTitle, readingDetail, drinkingDetail, children }:
           </p>
         </div>
 
-        <div className="mt-auto flex gap-2 pt-8">
-          {siteConfig.social.map((item) => {
-            const Icon = item.icon;
-            return (
-              <a
-                key={item.label}
-                href={item.href}
-                aria-label={item.label}
-                className={cn(
-                  "rounded-md p-2 text-muted-foreground hover:bg-background hover:text-accent",
-                  focusRing,
-                )}
-              >
-                <Icon className="h-4 w-4" />
-              </a>
-            );
-          })}
+        <div className="mt-auto flex items-center justify-between gap-2 pt-8">
+          <div className="flex gap-2">
+            {siteConfig.social.map((item) => {
+              const Icon = item.icon;
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  aria-label={item.label}
+                  className={cn(
+                    "rounded-md p-2 text-muted-foreground hover:bg-background hover:text-accent",
+                    focusRing,
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                </a>
+              );
+            })}
+          </div>
+          <ThemeToggle />
         </div>
       </aside>
 

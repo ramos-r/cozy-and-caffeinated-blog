@@ -65,6 +65,14 @@ without a code change or redeploy. Everything else (nav links, social
 links, footer copy, the About page's bio text) is plain code in
 `src/config/site.ts` and the page files themselves, changed the normal way.
 
+The Settings page also lets you pick the sidebar icon shown next to the
+site title — either a preset icon or an uploaded photo (falls back to the
+plain "C" if neither is set).
+
+Light/dark mode has its own toggle (sun/moon button, in the sidebar and in
+the admin header) — it's a per-visitor preference stored in that browser's
+`localStorage`, not a global site setting.
+
 Log in at [http://localhost:3000/login](http://localhost:3000/login) with
 the `ADMIN_EMAIL`/password pair above.
 
