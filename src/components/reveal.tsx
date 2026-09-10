@@ -1,7 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
+
+// useSyncExternalStore (not useEffect+useState) for reading the media
+// query, per React's guidance for syncing with a browser API.
+function subscribeReducedMotion(callback: () => void) {
+  const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mql.addEventListener("change", callback);
+  return () => mql.removeEventListener("change", callback);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function getReducedMotionServerSnapshot() {
+  return false;
+}
 
 interface RevealProps {
   children: React.ReactNode;
@@ -12,16 +28,19 @@ interface RevealProps {
 
 export function Reveal({ children, className, delay = 0 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [inView, setInView] = useState(false);
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot,
+  );
+  // Skip the observer state entirely when motion is reduced — render fully
+  // visible right away rather than relying on the global transition-duration
+  // override, which would still shift layout briefly.
+  const visible = reducedMotion || inView;
 
   useEffect(() => {
-    // Respect prefers-reduced-motion by skipping the observer entirely and
-    // rendering fully visible right away, rather than relying on the global
-    // transition-duration override (which would still shift layout briefly).
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setVisible(true);
-      return;
-    }
+    if (reducedMotion) return;
 
     const el = ref.current;
     if (!el) return;
@@ -29,7 +48,7 @@ export function Reveal({ children, className, delay = 0 }: RevealProps) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
+          setInView(true);
           observer.disconnect();
         }
       },
@@ -37,7 +56,7 @@ export function Reveal({ children, className, delay = 0 }: RevealProps) {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <div

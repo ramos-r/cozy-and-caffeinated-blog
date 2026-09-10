@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { upload } from "@vercel/blob/client";
 import { CATEGORIES, type Category } from "@/lib/categories";
 import { createGalleryItem, updateGalleryItem } from "./actions";
 import type { GalleryItem } from "@/lib/gallery";
@@ -45,16 +46,17 @@ export function GalleryForm({ item }: GalleryFormProps) {
       let finalImageUrl = imageUrl;
 
       if (imageFile) {
-        const formData = new FormData();
-        formData.append("file", imageFile);
-        const res = await fetch("/api/upload", { method: "POST", body: formData });
-        const json = await res.json();
-        if (!res.ok) {
-          setError(json.error ?? "Upload failed. Please try again.");
+        try {
+          const blob = await upload(imageFile.name, imageFile, {
+            access: "public",
+            handleUploadUrl: "/api/upload",
+          });
+          finalImageUrl = blob.url;
+        } catch {
+          setError("Upload failed. Please try again.");
           setIsSubmitting(false);
           return;
         }
-        finalImageUrl = json.url;
       }
 
       const payload = { caption, category, imageUrl: finalImageUrl, order };

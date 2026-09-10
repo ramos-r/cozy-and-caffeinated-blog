@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { upload } from "@vercel/blob/client";
 import { updateSiteSettings } from "./actions";
 import { SIDEBAR_ICONS, SIDEBAR_ICON_KEYS, type SidebarIconKey } from "@/lib/sidebar-icons";
 import { cn } from "@/lib/utils";
@@ -59,16 +60,17 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
       let finalImageUrl = avatarImageUrl;
 
       if (avatarImageFile) {
-        const formData = new FormData();
-        formData.append("file", avatarImageFile);
-        const res = await fetch("/api/upload", { method: "POST", body: formData });
-        const json = await res.json();
-        if (!res.ok) {
-          setError(json.error ?? "Upload failed. Please try again.");
+        try {
+          const blob = await upload(avatarImageFile.name, avatarImageFile, {
+            access: "public",
+            handleUploadUrl: "/api/upload",
+          });
+          finalImageUrl = blob.url;
+        } catch {
+          setError("Upload failed. Please try again.");
           setIsSubmitting(false);
           return;
         }
-        finalImageUrl = json.url;
       }
 
       await updateSiteSettings({

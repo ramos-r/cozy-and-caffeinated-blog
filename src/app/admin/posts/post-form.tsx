@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { upload } from "@vercel/blob/client";
 import { CATEGORIES, type Category } from "@/lib/categories";
 import { cn, slugify } from "@/lib/utils";
 import { MarkdownPreview } from "./markdown-preview";
@@ -54,16 +55,17 @@ export function PostForm({ post }: PostFormProps) {
       let finalCoverUrl = coverUrl;
 
       if (coverFile) {
-        const formData = new FormData();
-        formData.append("file", coverFile);
-        const res = await fetch("/api/upload", { method: "POST", body: formData });
-        const json = await res.json();
-        if (!res.ok) {
-          setError(json.error ?? "Upload failed. Please try again.");
+        try {
+          const blob = await upload(coverFile.name, coverFile, {
+            access: "public",
+            handleUploadUrl: "/api/upload",
+          });
+          finalCoverUrl = blob.url;
+        } catch {
+          setError("Upload failed. Please try again.");
           setIsSubmitting(false);
           return;
         }
-        finalCoverUrl = json.url;
       }
 
       const payload = {
